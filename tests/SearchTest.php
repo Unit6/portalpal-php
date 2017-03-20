@@ -125,6 +125,40 @@ class SearchTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testCreateSearch
      */
+    public function testSearchArea(PortalPal\Search $search)
+    {
+        $area = 'W2';
+
+        $search = $search->area($area);
+
+        $this->assertEquals($area, $search->getArea());
+
+        $params = $search->getParameters();
+
+        $this->assertArrayHasKey('area', $params);
+        $this->assertEquals($area, $params['area']);
+    }
+
+    /**
+     * @depends testCreateSearch
+     */
+    public function testSearchAreaList(PortalPal\Search $search)
+    {
+        $area = ['W2', 'NW10'];
+
+        $search = $search->area($area);
+
+        $this->assertEquals($area, $search->getArea());
+
+        $params = $search->getParameters();
+
+        $this->assertArrayHasKey('area', $params);
+        $this->assertEquals($area, $params['area']);
+    }
+
+    /**
+     * @depends testCreateSearch
+     */
     public function testSearchAvailability(PortalPal\Search $search)
     {
         $state = rand(0, 1);

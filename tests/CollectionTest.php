@@ -144,6 +144,54 @@ class CollectionTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGetClient
      */
+    public function testSearchByArea(PortalPal\Client $client)
+    {
+        $area = 'W2';
+
+        $search = (new PortalPal\Search())->area($area);
+
+        $collection = $client->getProperties($search);
+
+        $this->assertInstanceOf(PortalPal\Collection::class, $collection);
+
+        $this->assertEquals(26, $collection->getTotal());
+        $this->assertEquals(1, $collection->getCount());
+        $this->assertCount(1, $collection->getRows());
+
+        $property = $collection->getRows()[0];
+
+        $this->assertInstanceOf(PortalPal\Property::class, $property);
+
+        $this->assertEquals($area, $property->getArea());
+    }
+
+    /**
+     * @depends testGetClient
+     */
+    public function testSearchByAreaList(PortalPal\Client $client)
+    {
+        $area = ['W2', 'NW10'];
+
+        $search = (new PortalPal\Search())->area($area);
+
+        $collection = $client->getProperties($search);
+
+        $this->assertInstanceOf(PortalPal\Collection::class, $collection);
+
+        $this->assertEquals(28, $collection->getTotal());
+        $this->assertEquals(1, $collection->getCount());
+        $this->assertCount(1, $collection->getRows());
+
+        $property = $collection->getRows()[0];
+
+        $this->assertInstanceOf(PortalPal\Property::class, $property);
+
+        $this->assertContains($property->getArea(), $area);
+    }
+
+    /**
+     * @depends testGetClient
+     */
     public function testSearchByAvailability(PortalPal\Client $client)
     {
         $state = 1;
@@ -455,7 +503,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testSearchByCreatedDate(PortalPal\Client $client)
     {
-        $dt = new DateTime('2015-10-06 16:57:20.000000');
+        $dt = new DateTime('2016-07-06 16:06:36.000000');
 
         $search = (new PortalPal\Search())->createdDate($dt);
 
@@ -463,7 +511,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(PortalPal\Collection::class, $collection);
 
-        $this->assertEquals(58, $collection->getTotal());
+        $this->assertEquals(21, $collection->getTotal());
         $this->assertEquals(1, $collection->getCount());
         $this->assertCount(1, $collection->getRows());
 
@@ -905,7 +953,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testSearchByUpdateDate(PortalPal\Client $client)
     {
-        $dt = new DateTime('2016-09-23 11:07:47.000000');
+        $dt = new DateTime('2016-09-23 11:29:51.000000');
 
         $search = (new PortalPal\Search())->updatedDate($dt);
 
@@ -913,7 +961,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(PortalPal\Collection::class, $collection);
 
-        $this->assertEquals(17, $collection->getTotal());
+        $this->assertEquals(6, $collection->getTotal());
         $this->assertEquals(1, $collection->getCount());
         $this->assertCount(1, $collection->getRows());
 

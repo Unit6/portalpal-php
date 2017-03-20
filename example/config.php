@@ -40,8 +40,8 @@ function getCredentials($path)
 $credentials = getCredentials($path);
 
 $options = $credentials;
-#$options['endpoint'] = 'http://localhost:8081';
-$options['endpoint'] = 'https://api-dev.portalpal.co';
+$options['endpoint'] = 'http://localhost:8081';
+#$options['endpoint'] = 'https://api-dev.portalpal.co';
 
 define('INVALID_ID', 'fff0000f-0000-0000-00ff-00000f00f00f');
 define('PROPERTY_PK', '00000000-E5F2-4A4A-979A-6234E0EFF5B5');

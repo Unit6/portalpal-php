@@ -72,10 +72,20 @@ class Search
     private $sort;
 
     /**
+     * Property Area
+     *
+     * Match against a pre-defined area with either single area (as string)
+     * or a list of multiple areas (as array).
+     *
+     * @var string|array
+     */
+    private $area;
+
+    /**
      * Property Availability
      *
      * Exclude (1) properties with WebStatus of 'Not Available' or not (0).
-     * Default is to exclude 'Not Available' properties from resutls.
+     * Default is to exclude 'Not Available' properties from results.
      *
      * @var integer
      */
@@ -315,6 +325,16 @@ class Search
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Get Area
+     *
+     * @return string|array
+     */
+    public function getArea()
+    {
+        return $this->area;
     }
 
     /**
@@ -569,6 +589,21 @@ class Search
     {
         $clone = clone $this;
         $clone->address = $address;
+
+        return $clone;
+    }
+
+    /**
+     * Property Area
+     *
+     * @param string|array $area
+     *
+     * @return self
+     */
+    public function area($area)
+    {
+        $clone = clone $this;
+        $clone->area = $area;
 
         return $clone;
     }

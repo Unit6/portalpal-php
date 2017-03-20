@@ -11,6 +11,9 @@
             "homepage": "http://www.unit6websites.com"
         }
     ],
+    "scripts": {
+        "test": "phpunit"
+    },
     "repositories": [
         {
             "type": "composer",

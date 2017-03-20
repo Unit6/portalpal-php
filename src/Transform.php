@@ -117,6 +117,10 @@ class Transform
             $params['address'] = $address;
         }
 
+        if ($area = $search->getArea()) {
+            $params['area'] = $area;
+        }
+
         $availability = $search->getAvailability();
         if (is_integer($availability)) {
             $params['availability'] = $availability;

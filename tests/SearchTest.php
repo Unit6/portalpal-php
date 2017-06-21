@@ -671,4 +671,40 @@ class SearchTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('features', $params);
         $this->assertEquals($featuresParameter, $params['features']);
     }
+
+    /**
+     * @depends testCreateSearch
+     */
+    public function testSearchByBody(PortalPal\Search $search)
+    {
+        $area = 'W2';
+
+        $body = [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'match_phrase' => [
+                                            'Area' => $area
+                                        ]
+                                    ]
+                                ],
+                                'minimum_should_match' => 1,
+                                'boost' => 1
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $search->setBody($body);
+
+        $this->assertEquals($body, $search->getBody());
+
+        $this->assertArrayHasKey('query', $body);
+    }
 }

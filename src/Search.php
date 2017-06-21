@@ -72,6 +72,13 @@ class Search
     private $sort;
 
     /**
+     * Search Body
+     *
+     * @var array
+     */
+    private $body;
+
+    /**
      * Property Area
      *
      * Match against a pre-defined area with either single area (as string)
@@ -315,6 +322,28 @@ class Search
     public function getSort()
     {
         return $this->sort;
+    }
+
+    /**
+     * Get Search Body
+     *
+     * @return array
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * Get Search Body
+     *
+     * @param array $body Custom search body
+     *
+     * @return void
+     */
+    public function setBody(array $body)
+    {
+        $this->body = $body;
     }
 
     /**

@@ -326,19 +326,26 @@ final class Client
     /**
      * Sends request to PortalPal API
      *
+     * @param string $method   HTTP method
      * @param string $resource URI of API resource
      * @param array  $params   Query string parameters
      *
      * @return array
      */
-    public function request($resource, array $params = [])
+    public function request($method, $resource, array $params = [], array $data = null)
     {
         $body = null;
-        $method = 'GET';
+        $payload = null;
+
+        if ( ! empty($data)) {
+            $payload = json_encode($data);
+            $body = new Body();
+            $body->write($payload);
+        }
 
         $url = $this->getRequestUrl($resource, $params);
 
-        $authorization = $this->getAuthorization($url, $method, $body);
+        $authorization = $this->getAuthorization($url, $method, $payload);
 
         $headers = new Headers();
         $headers->set('Authorization', $authorization['field']);
@@ -430,8 +437,10 @@ final class Client
     public function getProperties(Search $search)
     {
         $params = $search->getParameters();
+        $body = $search->getBody();
+        $method = $body ? 'POST' : 'GET';
 
-        $response = $this->request('properties', $params);
+        $response = $this->request($method, 'properties', $params, $body);
 
         return Collection::parse($response);
     }
@@ -457,7 +466,7 @@ final class Client
         $params = array_merge($defaults, $params);
         $resource = sprintf('properties/%d', (integer) $id);
 
-        $response = $this->request($resource, $params);
+        $response = $this->request('GET', $resource, $params);
 
         return Property::parse($response);
     }

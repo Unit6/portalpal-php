@@ -25,9 +25,37 @@ echo sprintf('%s (ID: %d)', $property->getTitle(), $property->getId()) . PHP_EOL
 exit;
 */
 
+$search = (new PortalPal\Search())->size(4);
+
+$body = [
+    'query' => [
+        'bool' => [
+            'must' => [
+                [
+                    'bool' => [
+                        'should' => [
+                            [
+                                'match_phrase' => [
+                                    'Area' => 'W2'
+                                ]
+                            ]
+                        ],
+                        'minimum_should_match' => 1,
+                        'boost' => 1
+                    ]
+                ]
+            ]
+        ]
+    ]
+];
+
+$search->setBody($body);
+
+/*
 $search = (new PortalPal\Search())
     ->size(4)
     ->feature('garden');
+*/
 
 $collection = $client->getProperties($search);
 

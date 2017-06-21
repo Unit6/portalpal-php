@@ -144,6 +144,54 @@ class CollectionTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGetClient
      */
+    public function testSearchWithBody(PortalPal\Client $client)
+    {
+        $area = 'W2';
+
+        $body = [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'match_phrase' => [
+                                            'Area' => $area
+                                        ]
+                                    ]
+                                ],
+                                'minimum_should_match' => 1,
+                                'boost' => 1
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $search = new PortalPal\Search();
+
+        $search->setBody($body);
+
+        $collection = $client->getProperties($search);
+
+        $this->assertInstanceOf(PortalPal\Collection::class, $collection);
+
+        $this->assertEquals(26, $collection->getTotal());
+        $this->assertEquals(1, $collection->getCount());
+        $this->assertCount(1, $collection->getRows());
+
+        $property = $collection->getRows()[0];
+
+        $this->assertInstanceOf(PortalPal\Property::class, $property);
+
+        $this->assertEquals($area, $property->getArea());
+    }
+
+    /**
+     * @depends testGetClient
+     */
     public function testSearchByArea(PortalPal\Client $client)
     {
         $area = 'W2';
@@ -568,7 +616,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($property->isFeatured());
 
-        $dt = new DateTime('2016-09-23 12:57:08.000000');
+        $dt = new DateTime('2016-09-13 12:57:08.000000');
 
         $this->assertEquals($dt, $property->getFeaturedDate());
     }
